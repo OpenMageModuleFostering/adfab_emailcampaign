@@ -126,7 +126,7 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Ad
         /**
          * Adfab Logo. This module is open source and we just ask you to let this logo for a very passive ad :)
          */
-        $fieldset = $form->addFieldset('emailcampaign_usage_form', array('class' => 'fieldset-wide', 'legend'=>Mage::helper('adfab_emailcampaign')->__('Campaign Usage') . ' offered by <a href="http://www.adfab.fr"><img src="http://94.23.211.86/track/logo.gif" style="vertical-align: middle;"/></a>'));
+        $fieldset = $form->addFieldset('emailcampaign_usage_form', array('class' => 'fieldset-wide', 'legend'=>Mage::helper('adfab_emailcampaign')->__('Campaign Usage') . ' offered by <a href="http://www.adfab.fr"><img src="http://community.adfab.fr/logo.gif" style="vertical-align: middle;"/></a>'));
        
         foreach ($campaigns as $campaign) {
 

@@ -1,0 +1,59 @@
+<?php
+/**
+ * @see Mage_Adminhtml_Block_Notification_Window
+ */
+?>
+<?php if ($this->canShow()): ?>
+<?php $noticeIcon = (Mage::app()->getFrontController()->getRequest()->isSecure() ? 'https://' : 'http://')
+                . sprintf(Mage::getStoreConfig('system/adminnotification/severity_icons_url'), Mage::getVersion(), 'SEVERITY_NOTICE');
+?>
+<script type="text/javascript">
+//<![CDATA[
+    var messagePopupClosed = false;
+    function openMessagePopup() {
+        var height = $('html-body').getHeight();
+        $('message-popup-window-mask').setStyle({'height':height+'px'});
+        toggleSelectsUnderBlock($('message-popup-window-mask'), false);
+        Element.show('message-popup-window-mask');
+        $('message-popup-window').setStyle({'top':'130px'});
+    }
+
+    function closeMessagePopup() {
+        toggleSelectsUnderBlock($('message-popup-window-mask'), true);
+        Element.hide('message-popup-window-mask');
+        $('message-popup-window').setStyle({'top':'9999em'});
+        $('videoframe').replace('');
+        messagePopupClosed = true;
+    }
+
+    Event.observe(window, 'load', openMessagePopup);
+    Event.observe(window, 'keyup', function(evt) {
+        if(messagePopupClosed) return;
+        var code;
+        if (evt.keyCode) code = evt.keyCode;
+        else if (evt.which) code = evt.which;
+        if (code == Event.KEY_ESC) {
+            closeMessagePopup();
+        }
+    });
+//]]>
+</script>
+<div id="message-popup-window-mask" style="display:none;"></div>
+<div id="message-popup-window" class="message-popup" style="width:800px; left:50%; margin:0 0 0 -400px;">
+    <div class="message-popup-head">
+        <a href="#" onclick="closeMessagePopup(); return false;" title="<?php echo $this->getCloseText(); ?>"><span><?php echo $this->getCloseText(); ?></span></a>
+        <h2><?php echo $this->getHeaderText(); ?></h2>
+    </div>
+    <div class="message-popup-content">
+        <div class="message">
+            <span class="message-icon message-notice" style="background-image:url(<?php echo $noticeIcon ?>);"><?php echo "THANK YOU";?></span>
+            <p style="min-height: 25em; overflow:hidden; color:#644f3b; padding:21px 21px 10px;">
+                <?php echo "<b>Thank you for installing the emailcampaign module. Hope you'll enjoy using it</b>" ?><br/>
+                <?php echo "This video is our intervention during Magento Imagine in Las Vegas about performance." ?><br/>
+                <iframe id="videoframe" width="560" height="315" src="//www.youtube.com/embed/16-IiYjfxlg?rel=0" frameborder="0" allowfullscreen></iframe>
+            </p>
+        </div>
+        <!-- p class="read-more"><a href="<?php echo $this->getNoticeMessageUrl(); ?>" onclick="this.target='_blank';"><?php echo $this->getReadDetailsText(); ?></a></p-->
+    </div>
+</div>
+<?php endif; ?>

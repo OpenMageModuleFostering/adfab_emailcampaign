@@ -62,17 +62,17 @@ class Adfab_EmailCampaign_Model_Source_Template
         }
         // sort by names alphabetically
         asort($result);
-        if (!$asHash) {
-            $options = array();
-            $options[] = array('value' => '', 'label' => '---------Choose Email Template---------');
-            foreach ($result as $k => $v) {
-                if ($k == '')
-                    continue;
-                $options[] = array('value' => $k, 'label' => $v);
-            }
-    
-            $result = $options;
+        
+        $options = array();
+        $options[] = array('value' => '', 'label' => '---------Choose Email Template---------');
+        foreach ($result as $k => $v) {
+            if ($k == '')
+                continue;
+            $options[] = array('value' => $k, 'label' => $v);
         }
+
+        $result = $options;
+        
         return $result;
     }
 }

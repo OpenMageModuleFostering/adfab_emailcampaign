@@ -7,8 +7,24 @@ class Adfab_Emailcampaign_Model_Adminhtml_Observer  extends Mage_Core_Model_Abst
      */
     function transactionalemail_layout_after($observer) {
         try {
-            $controller   = $observer->getAction();
-
+            $controller  = $observer->getAction();
+            
+            /*
+             *   This part is taking care of the first launch and displays a welcome popin
+             */
+            $launchdone = Mage::getModel('adfab_emailcampaign/flag')->loadSelf();
+            
+            if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin() && empty($launchdone->getState())){
+                
+                $layout = $controller->getLayout();
+                $layout->getBlock('notification_window')->setTemplate('emailcampaign/notification/window.phtml');
+                
+                $launchdone->setState(1)->save();
+            }
+            
+            /*
+             * May I activate wysiwyg on transactional emails ?
+             */
             if($controller->getFullActionName() == 'adminhtml_system_email_template_edit')
             {
                 $layout = $controller->getLayout();

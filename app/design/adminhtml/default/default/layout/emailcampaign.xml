@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_campaign_index>
+        <reference name="content">
+            <block type="adfab_emailcampaign/adminhtml_campaign" name="emailcampaign" />
+        </reference>
+    </adminhtml_campaign_index>
+    
+    <adminhtml_campaign_recipient>
+        <reference name="content">
+            <block type="adfab_emailcampaign/adminhtml_recipient" name="emailcampaign_recipient" />
+        </reference>
+    </adminhtml_campaign_recipient>
+    
+    <adminhtml_campaign_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="addJs"><script>jquery/jquery.min.js</script></action>
+            <action method="addJs"><script>jquery/jquery-cron.min.js</script></action>
+            <action method="addItem"><type>skin_css</type><file>css/jquery-cron.css</file></action>
+            <action method="addItem"><type>skin_js</type><file>js/emailcampaign.js</file></action>
+        </reference>
+    </adminhtml_campaign_edit> 
+    
+    <default>
+        <reference name="notifications">
+            <block type="adfab_emailcampaign/adminhtml_notification_toolbar" name="adfab_emailcampaign_notification_toolbar" as="adfab_emailcampaign_notification_toolbar" acl="system/adminnotification/show_toolbar" template="emailcampaign/notification/toolbar.phtml" />
+        </reference>
+    </default>
+    
+</layout>

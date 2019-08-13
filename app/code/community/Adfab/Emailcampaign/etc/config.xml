@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *  extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Adfab EmailCampaign module to newer versions in the future.
+ * If you wish to customize the Adfab EmailCampaign module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Adfab
+ * @package    Adfab_EmailCampaign
+ * @copyright  Copyright (C) 2014 
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Adfab_EmailCampaign>
+            <version>0.1.3</version>
+        </Adfab_EmailCampaign>
+    </modules>
+    <global>
+        <helpers>
+            <adfab_emailcampaign>
+                <class>Adfab_EmailCampaign_Helper</class>
+            </adfab_emailcampaign>
+        </helpers>
+        <blocks>
+            <adfab_emailcampaign>
+                <class>Adfab_EmailCampaign_Block</class>
+            </adfab_emailcampaign>
+        </blocks>
+        <resources>
+            <adfab_emailcampaign_setup>
+                <setup>
+                    <module>Adfab_EmailCampaign</module>
+                    <connection>core_setup</connection>
+                </setup>
+            </adfab_emailcampaign_setup>
+        </resources>
+        <models>
+            <adfab_emailcampaign>
+                <class>Adfab_EmailCampaign_Model</class>
+                <resourceModel>adfab_emailcampaign_resource</resourceModel>
+            </adfab_emailcampaign>
+            <adfab_emailcampaign_resource>
+                <class>Adfab_EmailCampaign_Model_Resource</class>
+                <entities>
+                    <campaign>
+                        <table>emailcampaign_campaign</table>
+                    </campaign>
+                    <campaign_notification>
+                        <table>emailcampaign_campaign_notification</table>
+                    </campaign_notification>
+                </entities>
+            </adfab_emailcampaign_resource>
+        </models>
+        <emailcampaigns>
+            <campaigns>
+                <emailcampaign_wishlistreminder translate="name" module="adfab_emailcampaign">
+                    <name>Wishlist Reminder</name>
+                    <class>adfab_emailcampaign/campaign_wishlistReminder</class>
+                    <type>cron</type>
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_wishlistReminder</class>
+                        </form>
+                    </forms>
+                </emailcampaign_wishlistreminder>
+                <emailcampaign_wishliststockalert>
+                    <name>Wishlist Stock Alert</name>
+                    <class>adfab_emailcampaign/campaign_wishlistStockAlert</class>
+                    <type>cron</type>
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_wishlistStockAlert</class>
+                        </form>
+                    </forms>
+                </emailcampaign_wishliststockalert>
+                <emailcampaign_abandonedcart>
+                    <name>Abandoned Cart</name>
+                    <class>adfab_emailcampaign/campaign_abandonedCart</class>
+                    <type>cron</type>
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_abandonedCart</class>
+                        </form>
+                    </forms>
+                </emailcampaign_abandonedcart>
+                <emailcampaign_customerbirthday>
+                    <name>Customer Birthday</name>
+                    <class>adfab_emailcampaign/campaign_customerBirthday</class>
+                    <type>cron</type>
+                    <display_cron>0</display_cron> <!-- do not display cron in campaign edit page -->
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_customerBirthday</class>
+                        </form>
+                    </forms>
+                </emailcampaign_customerbirthday>
+                <emailcampaign_welcomereminder>
+                    <name>Welcome Reminder</name>
+                    <class>adfab_emailcampaign/campaign_welcomeReminder</class>
+                    <type>cron</type>
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_welcomeReminder</class>
+                        </form>
+                    </forms>
+                </emailcampaign_welcomereminder>
+                <emailcampaign_inscriptionanniversary>
+                    <name>Inscription Anniversary</name>
+                    <class>adfab_emailcampaign/campaign_inscriptionAnniversary</class>
+                    <type>cron</type>
+                    <display_cron>0</display_cron> <!-- do not display cron in campaign edit page -->
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_customerBirthday</class> <!-- same fields as customer birthday -->
+                        </form>
+                    </forms>
+                </emailcampaign_inscriptionanniversary>
+                <!--emailcampaign_ordersuccess>
+                    <name>Order Success</name>
+                    <class>adfab_emailcampaign/campaign_orderSuccess</class>
+                    <type>observer</type>
+                    <event>sales_order_place_after</event>
+                </emailcampaign_ordersuccess-->
+            </campaigns>
+            <connectors>
+                <magento>
+                    <name>Magento</name>
+                    <class>adfab_emailcampaign/connector_magento</class>
+                </magento>
+            </connectors>
+        </emailcampaigns>
+        <template>
+            <email>
+                <emailcampaign_wishlistreminder_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Wishlist Reminder</label>
+                    <file>emailcampaign/wishlist_reminder.html</file>
+                    <type>html</type>
+                </emailcampaign_wishlistreminder_email_template>
+                <emailcampaign_wishliststockalert_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Wishlist Stock Alert</label>
+                    <file>emailcampaign/wishlist_stock_alert.html</file>
+                    <type>html</type>
+                </emailcampaign_wishliststockalert_email_template>
+                <emailcampaign_abandonedcart_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Abandoned Cart</label>
+                    <file>emailcampaign/abandoned_cart.html</file>
+                    <type>html</type>
+                </emailcampaign_abandonedcart_email_template>
+                <emailcampaign_customerbirthday_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Customer Birthday</label>
+                    <file>emailcampaign/customer_birthday.html</file>
+                    <type>html</type>
+                </emailcampaign_customerbirthday_email_template>
+                <emailcampaign_welcomereminder_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Welcome Reminder</label>
+                    <file>emailcampaign/welcome_reminder.html</file>
+                    <type>html</type>
+                </emailcampaign_welcomereminder_email_template>
+                <emailcampaign_inscriptionanniversary_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Inscription Anniversary</label>
+                    <file>emailcampaign/inscription_anniversary.html</file>
+                    <type>html</type>
+                </emailcampaign_inscriptionanniversary_email_template>
+                <!--emailcampaign_ordersuccess_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Order success</label>
+                    <file>emailcampaign/order_success.html</file>
+                    <type>html</type>
+                </emailcampaign_ordersuccess_email_template-->
+            </email>
+        </template>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <adfab_emailcampaign_add_observers>
+                        <class>adfab_emailcampaign/observer</class>
+                        <method>addObservers</method>
+                    </adfab_emailcampaign_add_observers>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </global>
+    <admin>
+         <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <adfab_emailcampaign before="Mage_Adminhtml">Adfab_EmailCampaign_Adminhtml</adfab_emailcampaign>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Adfab_EmailCampaign>
+                    <files>
+                        <default>emailcampaign/Adfab_EmailCampaign.csv</default>
+                        <abandoned_cart>emailcampaign/Adfab_EmailCampaign_AbandonedCart.csv</abandoned_cart>
+                        <customer_birthday>emailcampaign/Adfab_EmailCampaign_CustomerBirthday.csv</customer_birthday>
+                        <inscription_anniversary>emailcampaign/Adfab_EmailCampaign_InscriptionAnniversary.csv</inscription_anniversary>
+                        <order_success>emailcampaign/Adfab_EmailCampaign_OrderSuccess.csv</order_success>
+                        <welcome_reminder>emailcampaign/Adfab_EmailCampaign_WelcomeReminder.csv</welcome_reminder>
+                        <wishlist_reminder>emailcampaign/Adfab_EmailCampaign_WishlistReminder.csv</wishlist_reminder>
+                        <wishlist_stock_alert>emailcampaign/Adfab_EmailCampaign_WishlistStockAlert.csv</wishlist_stock_alert>
+                    </files>
+                </Adfab_EmailCampaign>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <adfab_emailcampaign>
+                    <file>emailcampaign.xml</file>
+                </adfab_emailcampaign>
+            </updates>
+        </layout>
+        <events>
+        	<controller_action_layout_generate_blocks_after>
+				<observers>
+					<adfab_emailcampaign_layout_after>
+						<class>Adfab_Emailcampaign_Model_Adminhtml_Observer</class>
+						<method>transactionalemail_layout_after</method>
+					</adfab_emailcampaign_layout_after>
+				</observers>
+			</controller_action_layout_generate_blocks_after>
+        
+			<!-- cet observer me permet de maj le grid customer + le form account sans rewrite -->
+			<adminhtml_block_html_before>
+				<observers>
+					<adfab_emailcampaign_block_before>
+						<class>Adfab_Emailcampaign_Model_Adminhtml_Observer</class>
+						<method>transactionalemail_block_html_before</method>
+					</adfab_emailcampaign_block_before>
+				</observers>
+			</adminhtml_block_html_before>
+		</events>
+    </adminhtml>
+    <!-- <frontend>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <adfab_emailcampaign_add_observers>
+                        <class>adfab_emailcampaign/observer::addObservers</class>
+                    </adfab_emailcampaign_add_observers>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </frontend> -->
+    <crontab>
+        <events>
+            <default>
+                <observers>
+                    <adfab_emailcampaign_cron>
+                        <class>adfab_emailcampaign/cron</class>
+                        <method>dispatch</method>
+                    </adfab_emailcampaign_cron>
+                </observers>
+            </default>
+        </events>
+    </crontab>
+    <default>
+        <newsletter>
+            <adfab_emailcampaign>
+                <connector>magento</connector>
+            </adfab_emailcampaign>
+        </newsletter>
+    </default>
+    <phpunit>
+        <suite>
+            <modules>
+                <Adfab_EmailCampaign />
+            </modules>
+        </suite>
+    </phpunit>
+</config>

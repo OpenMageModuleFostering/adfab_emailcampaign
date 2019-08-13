@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab Emailcampaign module to newer versions in the future.
- * If you wish to customize the Adfab Emailcampaign module for your needs
+ * the Adfab EmailCampaign module to newer versions in the future.
+ * If you wish to customize the Adfab EmailCampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_Emailcampaign
+ * @package    Adfab_EmailCampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,18 +30,18 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_Emailcampaign
+ * @package    Adfab_EmailCampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_Emailcampaign_Model_Observer extends Mage_Core_Model_Abstract
+class Adfab_EmailCampaign_Model_Observer extends Mage_Core_Model_Abstract
 {
     
     /**
      * add campaign events into config
      * 
      * @param Varien_Event_Observer $event
-     * @return Adfab_Emailcampaign_Model_Observer
+     * @return Adfab_EmailCampaign_Model_Observer
      */
     public function addObservers($event)
     {
@@ -81,7 +81,7 @@ class Adfab_Emailcampaign_Model_Observer extends Mage_Core_Model_Abstract
         $configs = Mage::helper('adfab_emailcampaign')->getCampaignConfigByNodeValue('event', $observer->getEvent()->getName());
         foreach ($configs as $config) {
             $campaigns = Mage::getResourceModel('adfab_emailcampaign/campaign_collection')
-                    ->addFieldToFilter('status', array('eq' => Adfab_Emailcampaign_Model_Status::STATUS_ENABLED))
+                    ->addFieldToFilter('status', array('eq' => Adfab_EmailCampaign_Model_Status::STATUS_ENABLED))
                     ->addFieldToFilter('code', array('eq' => (string)$config->getName()));
             $class = Mage::getModel((string)$config->class);
             foreach ($campaigns as $campaign) {

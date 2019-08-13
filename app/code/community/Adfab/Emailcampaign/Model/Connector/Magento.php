@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab Emailcampaign module to newer versions in the future.
- * If you wish to customize the Adfab Emailcampaign module for your needs
+ * the Adfab EmailCampaign module to newer versions in the future.
+ * If you wish to customize the Adfab EmailCampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_Emailcampaign
+ * @package    Adfab_EmailCampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,20 +30,20 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_Emailcampaign
+ * @package    Adfab_EmailCampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_Emailcampaign_Model_Connector_Magento extends Adfab_Emailcampaign_Model_Connector_Abstract
+class Adfab_EmailCampaign_Model_Connector_Magento extends Adfab_EmailCampaign_Model_Connector_Abstract
 {
     
     /**
      *
-     * @param Adfab_Emailcampaign_Model_Campaign $campaign
+     * @param Adfab_EmailCampaign_Model_Campaign $campaign
      * @param Mage_Customer_Model_Resource_Customer_Collection $customer
      * @param array $data
      */
-    public function sendMail(Adfab_Emailcampaign_Model_Campaign $campaign, Mage_Customer_Model_Resource_Customer_Collection $customers, $data)
+    public function sendMail(Adfab_EmailCampaign_Model_Campaign $campaign, Mage_Customer_Model_Resource_Customer_Collection $customers, $data)
     {
         $mailTemplate = Mage::getModel('core/email_template');
         $closure = is_object($data) && ($data instanceof Closure);
@@ -57,7 +57,7 @@ class Adfab_Emailcampaign_Model_Connector_Magento extends Adfab_Emailcampaign_Mo
                     ->setReplyTo($customer->getEmail())
                     ->setTemplateSubject('test')
                     ->sendTransactional(
-                        (is_int($campaign->getTemplateId())) ? (int)$campaign->getTemplateId() : $campaign->getTemplateId(),
+                        (int)$campaign->getTemplateId(),
                         array('email' => $customer->getEmail(), 'name' => $customer->getFirstname() . ' ' . $customer->getLastname()),
                         $customer->getEmail(),
                         $customer->getFirstname() . ' ' . $customer->getLastname(),

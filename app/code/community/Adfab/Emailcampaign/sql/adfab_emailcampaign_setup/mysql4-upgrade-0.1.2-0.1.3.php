@@ -31,7 +31,7 @@
 $installer = $this;
 $installer->startSetup();
 
-// try {
+try {
     $installer->getConnection()->dropTable($installer->getTable('adfab_emailcampaign/campaign_notification'));
     $table = $installer->getConnection()->newTable($installer->getTable('adfab_emailcampaign/campaign_notification'))
         ->addColumn('notification_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
@@ -54,8 +54,8 @@ $installer->startSetup();
             'nullable' => false,
             ), 'Type');
     $installer->getConnection()->createTable($table);
-// } catch (Exception $e) {
-//     Mage::logException($e);
-// }
+} catch (Exception $e) {
+    Mage::logException($e);
+}
 
 $installer->endSetup();

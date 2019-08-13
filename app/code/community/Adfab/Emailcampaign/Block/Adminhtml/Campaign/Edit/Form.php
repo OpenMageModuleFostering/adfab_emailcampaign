@@ -44,8 +44,7 @@ class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Edit_Form extends Mage_Adminh
             'action' => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
             'method' => 'post',
             'enctype' => 'multipart/form-data'
-        )
-        );
+        ));
     
         $form->setUseContainer(true);
         $this->setForm($form);

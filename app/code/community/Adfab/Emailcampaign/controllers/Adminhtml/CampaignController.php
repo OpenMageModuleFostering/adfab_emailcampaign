@@ -159,26 +159,30 @@ class Adfab_Emailcampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Co
         }
         
         Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $class));
-        $class->process($campaign);
-        $class->updateLastRunDate();
-        Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));
-        $campaign->save();
+        $success = $class->process($campaign);
+        if ($success !== false) {
+            $class->updateLastRunDate();
+            Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));
+            $campaign->save();
 
-        $customers = $class->getCustomerList();
-        $msg = null;
-        if ($customers->count() > 10) {
-            $msg = Mage::helper('adfab_emailcampaign')->__('Test email was sent to %i addresses', $customers->getSize());
-        } else if ($customers->count() > 0) {
-            $emails = array();
-            foreach ($customers as $customer) {
-                $emails[] = $customer->getEmail();
+            $customers = $class->getCustomerList();
+            $msg = null;
+            if ($customers->count() > 10) {
+                $msg = Mage::helper('adfab_emailcampaign')->__('Test email was sent to %i addresses', $customers->getSize());
+            } else if ($customers->count() > 0) {
+                $emails = array();
+                foreach ($customers as $customer) {
+                    $emails[] = $customer->getEmail();
+                }
+                $msg = Mage::helper('adfab_emailcampaign')->__('Email was sent to %s', implode(', ', $emails));
+            } else {
+                $msg = Mage::helper('adfab_emailcampaign')->__('No customer match this campaign at this time');
             }
-            $msg = Mage::helper('adfab_emailcampaign')->__('Email was sent to %s', implode(', ', $emails));
+            
+            Mage::getSingleton('adminhtml/session')->addSuccess($msg);
         } else {
-            $msg = Mage::helper('adfab_emailcampaign')->__('No customer match this campaign at this time');
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adfab_emailcampaign')->__('Campaign was not processed'));
         }
-        
-        Mage::getSingleton('adminhtml/session')->addSuccess($msg);
         $this->_redirect('*/*/');
     }
     
@@ -204,22 +208,26 @@ class Adfab_Emailcampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Co
         
         $oldMode = $campaign->getMode();
         $campaign->setMode(Adfab_Emailcampaign_Model_Source_Mode::TEST_ALL_EMAIL);
-        Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $class));
-        $class->process($campaign);
-        Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));
-        $customers = $class->getCustomerList();
-        $campaign->setMode($oldMode)->save();
-        $msg = null;
-        if ($customers->count() > 10) {
-            $msg = Mage::helper('adfab_emailcampaign')->__('Test email was sent to %i addresses in test mode', $customers->getSize());
-        } else if ($customers->count() > 0) {
-            $emails = array();
-            foreach ($customers as $customer) {
-                $emails[] = $customer->getEmail();
+        Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $class, 'mode' => 'test'));
+        $success = $class->process($campaign);
+        if ($success !== false) {
+            Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class, 'mode' => 'test'));
+            $customers = $class->getCustomerList();
+            $campaign->setMode($oldMode)->save();
+            $msg = null;
+            if ($customers->count() > 10) {
+                $msg = Mage::helper('adfab_emailcampaign')->__('Test email was sent to %i addresses in test mode', $customers->getSize());
+            } else if ($customers->count() > 0) {
+                $emails = array();
+                foreach ($customers as $customer) {
+                    $emails[] = $customer->getEmail();
+                }
+                $msg = Mage::helper('adfab_emailcampaign')->__('Email was sent to %s in test mode', implode(', ', $emails));
+            } else {
+                $msg = Mage::helper('adfab_emailcampaign')->__('No test email found');
             }
-            $msg = Mage::helper('adfab_emailcampaign')->__('Email was sent to %s in test mode', implode(', ', $emails));
         } else {
-            $msg = Mage::helper('adfab_emailcampaign')->__('No test email found');
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adfab_emailcampaign')->__('Campaign was not processed'));
         }
     
         Mage::getSingleton('adminhtml/session')->addSuccess($msg);

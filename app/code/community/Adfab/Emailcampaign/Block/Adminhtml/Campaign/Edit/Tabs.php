@@ -59,8 +59,8 @@ class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Edit_Tabs extends Mage_Adminh
                 $i = 1;
                 foreach ($forms->children() as $form) {
                     $this->addTab('form_section_'.$i++, array(
-                        'label'     => isset($form->label) ? (string)$form->label : Mage::helper('adfab_emailcampaign')->__('Campaign Variables'),
-                        'title'     => isset($form->label) ? (string)$form->label : Mage::helper('adfab_emailcampaign')->__('Campaign Variables'),
+                        'label'     => isset($form->label) ? Mage::helper('adfab_emailcampaign')->__((string)$form->label) : Mage::helper('adfab_emailcampaign')->__('Campaign Variables'),
+                        'title'     => isset($form->label) ? Mage::helper('adfab_emailcampaign')->__((string)$form->label) : Mage::helper('adfab_emailcampaign')->__('Campaign Variables'),
                         'content'   => $this->getLayout()->createBlock((string)$form->class)->toHtml(),
                     ));
                 }

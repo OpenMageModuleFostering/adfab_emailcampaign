@@ -108,10 +108,14 @@ class Adfab_Emailcampaign_Model_Cron_Observer extends Mage_Cron_Model_Observer
                 ->save();
                 
                 Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $model));
-                call_user_func_array($callback, $arguments);
-                $model->updateLastRunDate();
-                Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $model));
-                $campaign->save();
+                $success = call_user_func_array($callback, $arguments);
+                if ($success !== false) {
+                    $model->updateLastRunDate();
+                    Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $model));
+                    $campaign->save();
+                } else {
+                    Mage::log('Campaign ID ' . $campaign->getId() . ' return false');
+                }
     
                 $schedule
                 ->setStatus(Mage_Cron_Model_Schedule::STATUS_SUCCESS)

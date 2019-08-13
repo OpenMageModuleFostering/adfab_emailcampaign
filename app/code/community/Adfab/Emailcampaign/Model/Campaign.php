@@ -50,12 +50,6 @@ class Adfab_Emailcampaign_Model_Campaign extends Mage_Core_Model_Abstract
         $this->_init('adfab_emailcampaign/campaign');
     }
     
-    public function loadByKey($key)
-    {
-        $this->addData($this->getResource()->loadByKey($key));
-        return $this;
-    }
-    
     public function setVariable($key, $value = null)
     {
         if (!$this->_variablesLoaded) {

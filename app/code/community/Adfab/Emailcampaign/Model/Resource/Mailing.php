@@ -34,13 +34,13 @@
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resource_Db_Abstract
+class Adfab_Emailcampaign_Model_Resource_Mailing extends Mage_Core_Model_Resource_Db_Abstract
 {
     
     /**
      * @var string
      */
-    protected $_campaignTable;
+    protected $_mailingTable;
     
     /**
      * @var Varien_Db_Adapter_Interface
@@ -49,8 +49,8 @@ class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resour
     
     public function _construct()
     {
-        $this->_init('adfab_emailcampaign/campaign', 'campaign_id');
-        $this->_campaignTable = Mage::getSingleton('core/resource')->getTableName('adfab_emailcampaign/campaign');
+        $this->_init('adfab_emailcampaign/mailing', 'mailing_id');
+        $this->_mailingTable = Mage::getSingleton('core/resource')->getTableName('adfab_emailcampaign/mailing');
         $this->_read = $this->_getReadAdapter();
     }
     
@@ -68,6 +68,27 @@ class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resour
     protected function _getWriteAdapter()
     {
         return Mage::getSingleton('core/resource')->getConnection('core_write');
+    }
+    
+    /**
+     * add mailing data after the campaign is processed
+     * @param Adfab_Emailcampaign_Model_Campaign_Abstract $model
+     * @param Adfab_Emailcampaign_Model_Campaign $campaign
+     */
+    public function addMailingData($model, $campaign)
+    {
+        $customers = $model->getCustomerList();
+        $this->_getWriteAdapter()->insert(
+            $this->_mailingTable, 
+            array(
+                'campaign_id'     => $campaign->getId(),
+                'recipient_count' => $customers->count(),
+                'executed_at'     => date('Y-m-d H:i:s')
+            )
+        );
+        $mailingId = $this->_getWriteAdapter()->lastInsertId($this->_mailingTable, 'mailing_id');
+        Mage::getResourceModel('adfab_emailcampaign/mailing_recipient')
+                ->addMailingRecipientData($mailingId, $model, $campaign);
     }
     
 }

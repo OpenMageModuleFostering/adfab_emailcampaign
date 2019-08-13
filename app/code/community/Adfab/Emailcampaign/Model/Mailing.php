@@ -31,34 +31,33 @@
  *
  * @category   Adfab
  * @package    Adfab_Emailcampaign
- * @subpackage Block
+ * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-abstract class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract extends Mage_Adminhtml_Block_Widget_Form
+class Adfab_Emailcampaign_Model_Mailing extends Mage_Core_Model_Abstract
 {
     
-    /**
-     * @param array $variables
-     * @return array
-     */
-    protected function _transform($variables, $prefix = '')
+    public function _construct()
     {
-        $defaults = array();
-        if (!$variables) return $defaults;
-        foreach ($variables as $k => $v) {
-            $key = $prefix ?
-                    $prefix . '_' . $k :
-                    $k;
-            if (is_array($v)) {
-                $defaults = array_merge(
-                    $this->_transform($v, $key),
-                    $defaults
-                );
-            } else {
-                $defaults['variables_' . $key] = $v;
-            }
-        }
-        return $defaults;
+        parent::_construct();
+        $this->_init('adfab_emailcampaign/mailing');
     }
-        
+    
+    /**
+     * fired by emailcampaign_campaign_process_after
+     * add mailing data after the campaign is processed
+     * @param Varien_Event_Observer $observer
+     */
+    public function addMailingData($observer)
+    {
+        // do not log if test, for exemple : view recipients.
+        if ($observer->getMode() == 'test') {
+            return $this;
+        }
+        $this->getResource()->addMailingData(
+            $observer->getModel(),
+            $observer->getCampaign()
+        );
+    }
+    
 }

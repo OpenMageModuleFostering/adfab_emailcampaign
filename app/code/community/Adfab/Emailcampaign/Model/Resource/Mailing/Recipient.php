@@ -34,13 +34,13 @@
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resource_Db_Abstract
+class Adfab_Emailcampaign_Model_Resource_Mailing_Recipient extends Mage_Core_Model_Resource_Db_Abstract
 {
     
     /**
      * @var string
      */
-    protected $_campaignTable;
+    protected $_recipientTable;
     
     /**
      * @var Varien_Db_Adapter_Interface
@@ -49,8 +49,8 @@ class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resour
     
     public function _construct()
     {
-        $this->_init('adfab_emailcampaign/campaign', 'campaign_id');
-        $this->_campaignTable = Mage::getSingleton('core/resource')->getTableName('adfab_emailcampaign/campaign');
+        $this->_init('adfab_emailcampaign/mailing_recipient', 'recipient_id');
+        $this->_recipientTable = Mage::getSingleton('core/resource')->getTableName('adfab_emailcampaign/mailing_recipient');
         $this->_read = $this->_getReadAdapter();
     }
     
@@ -68,6 +68,40 @@ class Adfab_Emailcampaign_Model_Resource_Campaign extends Mage_Core_Model_Resour
     protected function _getWriteAdapter()
     {
         return Mage::getSingleton('core/resource')->getConnection('core_write');
+    }
+    
+    /**
+     * add mailing recipient data after the campaign is processed
+     * @param integer $mailingId
+     * @param Adfab_Emailcampaign_Model_Campaign_Abstract $model
+     * @param Adfab_Emailcampaign_Model_Campaign $campaign
+     */
+    public function addMailingRecipientData($mailingId, $model, $campaign)
+    {
+        $customers = $model->getCustomerList();
+        if (!$customers->getSize()) {
+            return;
+        }
+        
+        $data = array();
+        foreach ($customers as $customer) {
+            $data[] = array(
+                'mailing_id'    => $mailingId,
+                'customer_id'   => $customer->getId(),
+                // if the campaign save a coupon for the customer
+                'coupon_code'   => $customer->getCampaignCouponCode() ? $customer->getCampaignCouponCode() : null
+            );
+        }
+        
+        $this->_getWriteAdapter()->insertArray(
+            $this->_recipientTable,
+            array(
+                'mailing_id',
+                'customer_id',
+                'coupon_code',
+            ),
+            $data
+        );
     }
     
 }

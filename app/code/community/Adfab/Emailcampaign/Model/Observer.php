@@ -86,8 +86,37 @@ class Adfab_Emailcampaign_Model_Observer extends Mage_Core_Model_Abstract
             $class = Mage::getModel((string)$config->class);
             foreach ($campaigns as $campaign) {
                 Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $class));
-                $class->process($campaign, $observer);
-                Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));
+                $success = $class->process($campaign, $observer);
+                if ($success !== false) {
+                    Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));
+                } else {
+                    Mage::log('Campaign ID ' . $campaign->getId() . ' return false');
+                }
+            }
+        }
+    }
+    
+    /**
+     * check if coupon can be used by the customer according to mailing_recipient table
+     * @param Varien_Event_Observer $observer
+     */
+    public function checkCouponCode($observer)
+    {
+        $quote = $observer->getQuote();
+        $coupon = $quote->getCouponCode();
+        $recipient = Mage::getResourceModel('adfab_emailcampaign/mailing_recipient_collection')
+                ->addFieldToFilter('coupon_code', array('eq' => $coupon))
+                ->getFirstItem();
+        // only if we have a recipient, check the coupon validity
+        if ($recipient && $recipient->getId()) {
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            $customerId = $customer ? $customer->getId() : false;
+            // the customer must match with the coupon defined in mailing_recipient table
+            if (!$customerId || $recipient->getCustomerId() != $customerId) {
+                $result = $observer->getResult();
+                $result->setDiscountAmount(0);
+                $result->setBaseDiscountAmount(0);
+                $quote->unsCouponCode();
             }
         }
     }

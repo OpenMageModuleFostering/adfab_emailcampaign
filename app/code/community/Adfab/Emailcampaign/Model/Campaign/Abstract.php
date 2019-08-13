@@ -90,6 +90,15 @@ abstract class Adfab_Emailcampaign_Model_Campaign_Abstract
         if (!$this->_connector || !$this->_campaign) {
             Mage::throwException('you must call _init method first');
         }
+        
+        // check if the campaign is using a price rule
+        if (!$this->isVoid() && ($coupon = $this->_campaign->getVariable('coupon'))) {
+            if (isset($coupon['use_rule']) && $coupon['use_rule']) {
+                // generate now to be able to use it in the template
+                Mage::helper('adfab_emailcampaign/coupon')->generateCouponForCustomers($coupon['rule_id'], $customers, $coupon);
+            }
+        }
+        
         $this->_connector->sendMail($this->_campaign, $customers, $data);
     }
     
@@ -147,5 +156,10 @@ abstract class Adfab_Emailcampaign_Model_Campaign_Abstract
         $this->_campaign->setVariable('last_run', $this->_processTime ? $this->_processTime : time());
         return $this;
     }
+    
+    /**
+     * @param Adfab_Emailcampaign_Model_Campaign $campaign
+     */
+    public function beforeCampaignSave($campaign) {}
     
 }

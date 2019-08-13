@@ -31,34 +31,16 @@
  *
  * @category   Adfab
  * @package    Adfab_Emailcampaign
- * @subpackage Block
+ * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-abstract class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract extends Mage_Adminhtml_Block_Widget_Form
+class Adfab_Emailcampaign_Model_Resource_Mailing_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     
-    /**
-     * @param array $variables
-     * @return array
-     */
-    protected function _transform($variables, $prefix = '')
+    public function _construct()
     {
-        $defaults = array();
-        if (!$variables) return $defaults;
-        foreach ($variables as $k => $v) {
-            $key = $prefix ?
-                    $prefix . '_' . $k :
-                    $k;
-            if (is_array($v)) {
-                $defaults = array_merge(
-                    $this->_transform($v, $key),
-                    $defaults
-                );
-            } else {
-                $defaults['variables_' . $key] = $v;
-            }
-        }
-        return $defaults;
+        parent::_construct();
+        $this->_init('adfab_emailcampaign/mailing');
     }
-        
+    
 }

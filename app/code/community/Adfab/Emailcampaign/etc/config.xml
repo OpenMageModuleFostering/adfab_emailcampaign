@@ -26,7 +26,7 @@
 <config>
     <modules>
         <Adfab_Emailcampaign>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
         </Adfab_Emailcampaign>
     </modules>
     <global>
@@ -62,6 +62,12 @@
                     <campaign_notification>
                         <table>emailcampaign_campaign_notification</table>
                     </campaign_notification>
+                    <mailing>
+                        <table>emailcampaign_mailing</table>
+                    </mailing>
+                    <mailing_recipient>
+                        <table>emailcampaign_mailing_recipient</table>
+                    </mailing_recipient>
                 </entities>
             </adfab_emailcampaign_resource>
         </models>
@@ -139,6 +145,20 @@
                         </form>
                     </forms>
                 </emailcampaign_nursing>
+                <emailcampaign_offerafterorder>
+                    <name>Offer After Order</name>
+                    <class>adfab_emailcampaign/campaign_offerAfterOrder</class>
+                    <type>cron</type>
+                    <forms>
+                        <form>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_offerAfterOrder</class>
+                        </form>
+                        <coupons>
+                            <class>adfab_emailcampaign/adminhtml_campaign_forms_coupons</class>
+                            <label>Coupons options</label>
+                        </coupons>
+                    </forms>
+                </emailcampaign_offerafterorder>
                 <!--emailcampaign_ordersuccess>
                     <name>Order Success</name>
                     <class>adfab_emailcampaign/campaign_orderSuccess</class>
@@ -190,6 +210,11 @@
                     <file>emailcampaign/nursing.html</file>
                     <type>html</type>
                 </emailcampaign_nursing_email_template>
+                <emailcampaign_offerafterorder_email_template translate="label" module="adfab_emailcampaign">
+                    <label>Offer After Order</label>
+                    <file>emailcampaign/offer_after_order.html</file>
+                    <type>html</type>
+                </emailcampaign_offerafterorder_email_template>
                 <!--emailcampaign_ordersuccess_email_template translate="label" module="adfab_emailcampaign">
                     <label>Order success</label>
                     <file>emailcampaign/order_success.html</file>
@@ -206,6 +231,22 @@
                     </adfab_emailcampaign_add_observers>
                 </observers>
             </controller_front_init_before>
+            <emailcampaign_campaign_process_after>
+                <observers>
+                    <adfab_emailcampaign_add_mailing_data>
+                        <class>adfab_emailcampaign/mailing</class>
+                        <method>addMailingData</method>
+                    </adfab_emailcampaign_add_mailing_data>
+                </observers>
+            </emailcampaign_campaign_process_after>
+            <salesrule_validator_process>
+                <observers>
+                    <adfab_emailcampaign_check_coupon_code>
+                        <class>adfab_emailcampaign/observer</class>
+                        <method>checkCouponCode</method>
+                    </adfab_emailcampaign_check_coupon_code>
+                </observers>
+            </salesrule_validator_process>
         </events>
     </global>
     <admin>
@@ -233,6 +274,7 @@
                         <wishlist_reminder>emailcampaign/Adfab_Emailcampaign_WishlistReminder.csv</wishlist_reminder>
                         <wishlist_stock_alert>emailcampaign/Adfab_Emailcampaign_WishlistStockAlert.csv</wishlist_stock_alert>
                         <nursing>emailcampaign/Adfab_Emailcampaign_Nursing.csv</nursing>
+                        <offerafterorder>emailcampaign/Adfab_Emailcampaign_OfferAfterOrder.csv</offerafterorder>
                     </files>
                 </Adfab_Emailcampaign>
             </modules>

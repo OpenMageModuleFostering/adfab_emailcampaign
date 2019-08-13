@@ -31,34 +31,38 @@
  *
  * @category   Adfab
  * @package    Adfab_Emailcampaign
- * @subpackage Block
+ * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-abstract class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract extends Mage_Adminhtml_Block_Widget_Form
+class Adfab_Emailcampaign_Model_Source_SalesRule_Rule
 {
-    
+
     /**
-     * @param array $variables
+     * Generate list of email templates
+     *
      * @return array
      */
-    protected function _transform($variables, $prefix = '')
+    public function toFormOptionArray()
     {
-        $defaults = array();
-        if (!$variables) return $defaults;
-        foreach ($variables as $k => $v) {
-            $key = $prefix ?
-                    $prefix . '_' . $k :
-                    $k;
-            if (is_array($v)) {
-                $defaults = array_merge(
-                    $this->_transform($v, $key),
-                    $defaults
-                );
-            } else {
-                $defaults['variables_' . $key] = $v;
-            }
+        $result = array();
+        $collection = Mage::getResourceModel('salesrule/rule_collection')->load();
+        $options = $collection->toOptionArray();
+        foreach ($collection as $rule) {
+            $result[$rule->getRuleId()] = $rule->getName();
         }
-        return $defaults;
-    }
+        // sort by names alphabetically
+        asort($result);
         
+        $options = array();
+        $options[] = array('value' => '', 'label' => '--------- ' . Mage::helper('adfab_emailcampaign')->__('Choose Rule') . ' ---------');
+        foreach ($result as $k => $v) {
+            if ($k == '')
+                continue;
+            $options[] = array('value' => $k, 'label' => $v);
+        }
+
+        $result = $options;
+        return $result;
+    }
+    
 }

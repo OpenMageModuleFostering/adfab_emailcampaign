@@ -56,10 +56,5 @@ class Adfab_Emailcampaign_Model_Campaign_OrderSuccess extends Adfab_Emailcampaig
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_order_success');
-    }
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_order_success');
-    }      
+    }     
 }

@@ -8,6 +8,7 @@ document.observe("dom:loaded", function() {
 	var warning = $('emailcampaign_warning_' + $F(select)).up(1);
 	
 	usage.show();
+	warning.show();
 	$('emailcampaign_warning_' + $F(select)).setStyle({color:'#FF0000'});
 	
 	select.observe('change', function(event, element) {

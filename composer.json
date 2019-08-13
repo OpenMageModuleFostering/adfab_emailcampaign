@@ -1,7 +1,7 @@
 {
     "name": "OpenMageModuleFostering/Adfab_Emailcampaign",
     "type": "magento-module",
-    "license": "AFL",
+    "license": "MIT",
     "homepage": "",
     "description": "Email Campaign let you create scheduled email campaigns to initiate dialog with your prospects and customers. Boost your ROI and take care of your customers !",
     "authors": [

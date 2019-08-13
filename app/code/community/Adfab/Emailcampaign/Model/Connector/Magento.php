@@ -57,7 +57,7 @@ class Adfab_Emailcampaign_Model_Connector_Magento extends Adfab_Emailcampaign_Mo
                     ->setReplyTo($customer->getEmail())
                     ->setTemplateSubject('test')
                     ->sendTransactional(
-                        (int)$campaign->getTemplateId(),
+                        (is_int($campaign->getTemplateId())) ? (int)$campaign->getTemplateId() : $campaign->getTemplateId(),
                         array('email' => $customer->getEmail(), 'name' => $customer->getFirstname() . ' ' . $customer->getLastname()),
                         $customer->getEmail(),
                         $customer->getFirstname() . ' ' . $customer->getLastname(),

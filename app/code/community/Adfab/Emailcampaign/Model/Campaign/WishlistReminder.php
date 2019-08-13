@@ -78,10 +78,5 @@ class Adfab_Emailcampaign_Model_Campaign_WishlistReminder extends Adfab_Emailcam
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_wishlist_reminder');
-    }
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_wishlist_reminder');
-    }      
+    }    
 }

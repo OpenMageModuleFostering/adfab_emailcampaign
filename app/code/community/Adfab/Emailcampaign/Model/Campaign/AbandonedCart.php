@@ -80,11 +80,5 @@ class Adfab_Emailcampaign_Model_Campaign_AbandonedCart extends Adfab_Emailcampai
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_abandoned_cart');
-    }
-    
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_abandoned_cart');
-    }      
-    
+    }  
 }

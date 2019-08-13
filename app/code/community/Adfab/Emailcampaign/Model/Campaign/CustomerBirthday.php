@@ -70,7 +70,7 @@ class Adfab_Emailcampaign_Model_Campaign_CustomerBirthday extends Adfab_Emailcam
                
         switch ($configDob) {
             case 'req':
-                return Mage::helper('adfab_emailcampaign')->__('warning_customer_birthday_cart_req');
+                return "";
                 break;
             case 'opt':
                 return Mage::helper('adfab_emailcampaign')->__('warning_customer_birthday_cart_opt');

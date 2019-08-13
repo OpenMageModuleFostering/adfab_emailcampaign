@@ -55,12 +55,23 @@ class Adfab_Emailcampaign_Model_Campaign_WelcomeReminder extends Adfab_Emailcamp
         $dateFrom->add((-$olderThan), Zend_Date::DAY);
         $dateFrom->add($lastRun - $this->_processTime, Zend_Date::SECOND);
         
+        $ressource = Mage::getSingleton('core/resource');
+
         $customers->addFieldToFilter('created_at', array(
             'gt' => date('Y-m-d H:i:s', $dateFrom->getTimestamp())
-        ));
-        $customers->addFieldToFilter('created_at', array(
+        ))
+        ->addFieldToFilter('created_at', array(
             'lt' => date('Y-m-d H:i:s', $dateTo->getTimestamp())
-        ));
+        ))
+        ->getSelect()->joinLeft(
+            array(
+                'order' => $ressource->getTableName('sales/order')
+            ),
+            'order.customer_id = e.entity_id',
+            array()
+        )
+        ->where('order.entity_id IS NULL')
+        ->distinct(true);
     
         $this->sendMail(
             $customers,
@@ -73,11 +84,5 @@ class Adfab_Emailcampaign_Model_Campaign_WelcomeReminder extends Adfab_Emailcamp
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_welcome_reminder');
-    }
-
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_welcome_reminder');
-    }      
+    }    
 }

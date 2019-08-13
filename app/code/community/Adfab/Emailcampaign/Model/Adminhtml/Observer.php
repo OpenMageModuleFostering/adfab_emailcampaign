@@ -14,7 +14,7 @@ class Adfab_Emailcampaign_Model_Adminhtml_Observer  extends Mage_Core_Model_Abst
              */
             $launchdone = Mage::getModel('adfab_emailcampaign/flag')->loadSelf();
             
-            if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin() && $launchdone->getState()){
+            if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin() && (!$launchdone || !$launchdone->getState())){
                 
                 $layout = $controller->getLayout();
                 $layout->getBlock('notification_window')->setTemplate('emailcampaign/notification/window.phtml');

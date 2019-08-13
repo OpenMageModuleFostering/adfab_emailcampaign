@@ -60,11 +60,6 @@ class Adfab_Emailcampaign_Model_Campaign_InscriptionAnniversary extends Adfab_Em
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_inscription_anniversary');
     }
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_inscription_anniversary');
-    }  
     
     /**
      * manually set cron expr to schedule campaign every days

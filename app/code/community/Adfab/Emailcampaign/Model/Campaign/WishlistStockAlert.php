@@ -90,10 +90,5 @@ class Adfab_Emailcampaign_Model_Campaign_WishlistStockAlert extends Adfab_Emailc
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_wishlist_stock_alert');
-    }
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_wishlist_stock_alert');
-    }      
+    }   
 }

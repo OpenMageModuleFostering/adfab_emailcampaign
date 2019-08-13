@@ -15,16 +15,16 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Adfab_EmailCampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Controller_Action
+class Adfab_Emailcampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Controller_Action
 {
 
     protected function _initAction()
@@ -90,7 +90,7 @@ class Adfab_EmailCampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Co
     public function saveAction()
     {
         if ($data = $this->getRequest()->getPost()) {
-            /* @var $model Adfab_EmailCampaign_Model_Campaign */
+            /* @var $model Adfab_Emailcampaign_Model_Campaign */
             $model = Mage::getModel('adfab_emailcampaign/campaign');
             if (isset($data['variables']) && is_array($data['variables'])) {
                 $model->setVariable($data['variables']);
@@ -203,7 +203,7 @@ class Adfab_EmailCampaign_Adminhtml_CampaignController extends Mage_Adminhtml_Co
         }
         
         $oldMode = $campaign->getMode();
-        $campaign->setMode(Adfab_EmailCampaign_Model_Source_Mode::TEST_ALL_EMAIL);
+        $campaign->setMode(Adfab_Emailcampaign_Model_Source_Mode::TEST_ALL_EMAIL);
         Mage::dispatchEvent('emailcampaign_campaign_process_before', array('campaign' => $campaign, 'model' => $class));
         $class->process($campaign);
         Mage::dispatchEvent('emailcampaign_campaign_process_after', array('campaign' => $campaign, 'model' => $class));

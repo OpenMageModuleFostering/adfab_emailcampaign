@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,11 +30,11 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Helper
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Helper_Data extends Mage_Core_Helper_Data
+class Adfab_Emailcampaign_Helper_Data extends Mage_Core_Helper_Data
 {
     
     protected $_campaigns;
@@ -47,13 +47,13 @@ class Adfab_EmailCampaign_Helper_Data extends Mage_Core_Helper_Data
     /**
      * 
      * @param string $type
-     * @return array<Adfab_EmailCampaign_Model_Campaign>
+     * @return array<Adfab_Emailcampaign_Model_Campaign>
      */
     public function getCampaignsByType($type)
     {
         if (is_null($this->_campaigns)) {
             $this->_campaigns = Mage::getResourceModel('adfab_emailcampaign/campaign_collection')
-                ->addFieldToFilter('status', array('eq' => Adfab_EmailCampaign_Model_Status::STATUS_ENABLED));
+                ->addFieldToFilter('status', array('eq' => Adfab_Emailcampaign_Model_Status::STATUS_ENABLED));
         }
         $found = array();
         foreach ($this->_campaigns as $campaign) {
@@ -103,7 +103,7 @@ class Adfab_EmailCampaign_Helper_Data extends Mage_Core_Helper_Data
     /**
      * 
      * @param string $code
-     * @return Adfab_EmailCampaign_Model_Campaign_Abstract
+     * @return Adfab_Emailcampaign_Model_Campaign_Abstract
      */
     public function getCampaignModel($code)
     {

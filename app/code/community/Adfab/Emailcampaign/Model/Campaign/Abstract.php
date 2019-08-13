@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,16 +30,16 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
+abstract class Adfab_Emailcampaign_Model_Campaign_Abstract
 {
     
     /**
      * state pattern
-     * @var Adfab_EmailCampaign_Model_Campaign_State_Abstract
+     * @var Adfab_Emailcampaign_Model_Campaign_State_Abstract
      */
     private $_state;
     
@@ -50,12 +50,12 @@ abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
     private $_void = false;
     
     /**
-     * @var Adfab_EmailCampaign_Model_Connector_Abstract
+     * @var Adfab_Emailcampaign_Model_Connector_Abstract
      */
     protected $_connector;
     
     /**
-     * @var Adfab_EmailCampaign_Model_Campaign
+     * @var Adfab_Emailcampaign_Model_Campaign
      */
     protected $_campaign;
     
@@ -64,7 +64,7 @@ abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
      */
     protected $_processTime;
     
-    protected function _init(Adfab_EmailCampaign_Model_Campaign $campaign)
+    protected function _init(Adfab_Emailcampaign_Model_Campaign $campaign)
     {
         $this->_campaign = $campaign;
         $this->_state = Mage::getSingleton('adfab_emailcampaign/campaign_state_' . $campaign->getMode());
@@ -81,7 +81,7 @@ abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
     
     /**
      * 
-     * @param Adfab_EmailCampaign_Model_Campaign $campaign
+     * @param Adfab_Emailcampaign_Model_Campaign $campaign
      * @param Mage_Customer_Model_Resource_Customer_Collection $customer
      * @param array $data
      */
@@ -122,7 +122,7 @@ abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
         
     /**
      * @param bool $void
-     * @return Adfab_EmailCampaign_Model_Campaign_Abstract
+     * @return Adfab_Emailcampaign_Model_Campaign_Abstract
      */
     public function setIsVoid($void)
     {
@@ -140,7 +140,7 @@ abstract class Adfab_EmailCampaign_Model_Campaign_Abstract
     
     /**
      * update campaign last run in campaign variables
-     * @return Adfab_EmailCampaign_Model_Campaign_Abstract
+     * @return Adfab_Emailcampaign_Model_Campaign_Abstract
      */
     public function updateLastRunDate()
     {

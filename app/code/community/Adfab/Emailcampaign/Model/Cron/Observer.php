@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -29,11 +29,11 @@
  * Methods are overloded from magento ce 1.7.0.2
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Model_Cron_Observer extends Mage_Cron_Model_Observer
+class Adfab_Emailcampaign_Model_Cron_Observer extends Mage_Cron_Model_Observer
 {
     
     const EMAILCAMPAIGN_CACHE_KEY_LAST_SCHEDULE_GENERATE_AT = 'emailcampaign_cron_last_history_cleanup_at';
@@ -189,7 +189,7 @@ class Adfab_EmailCampaign_Model_Cron_Observer extends Mage_Cron_Model_Observer
     protected function _getCronCampaigns()
     {
         if (is_null($this->_campaigns)) {
-            $this->_campaigns = Mage::helper('adfab_emailcampaign')->getCampaignsByType(Adfab_EmailCampaign_Model_Campaign::TYPE_CRON);
+            $this->_campaigns = Mage::helper('adfab_emailcampaign')->getCampaignsByType(Adfab_Emailcampaign_Model_Campaign::TYPE_CRON);
         }
         return $this->_campaigns;
     }

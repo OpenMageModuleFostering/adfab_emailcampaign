@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,11 +30,11 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Block
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Forms_WishlistStockAlert extends Adfab_EmailCampaign_Block_Adminhtml_Campaign_Forms_Abstract
+class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_WishlistStockAlert extends Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract
 {
     
     protected function _prepareForm()
@@ -46,9 +46,17 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Forms_WishlistStockAlert exte
         
         $fieldset->addField('variables_stock_alert', 'text', array(
             'label'     => Mage::helper('adfab_emailcampaign')->__('Stock is less than'),
-            'class'     => 'required-entry',
+            'class'     => 'required-entry validate-number',
             'required'  => true,
             'name'      => 'variables[stock_alert]'
+        ));
+        
+        $fieldset->addField('variables_interval', 'text', array(
+            'label'     => Mage::helper('adfab_emailcampaign')->__('Interval between a customer cannot receive a second stock alert email'),
+            'class'     => 'required-entry validate-number',
+            'required'  => true,
+            'name'      => 'variables[interval]',
+            'note'      => Mage::helper('adfab_emailcampaign')->__('in days')
         ));
         
         if ($campaign = Mage::registry('emailcampaign_data')) {

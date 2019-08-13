@@ -1,0 +1,3 @@
+"notice_customer_birthday","A mail is sent to the customers who have a birthday"
+"warning_customer_birthday_cart_opt","The birthday date is currently optional in the client configuration"
+"warning_customer_birthday_cart_none","The birthday date is currently disabled in the client configuration"

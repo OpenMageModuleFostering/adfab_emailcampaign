@@ -34,7 +34,7 @@
  * @subpackage Block
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_CustomerBirthday extends Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract
+class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Nursing extends Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_Abstract
 {
     
     protected function _prepareForm()
@@ -44,26 +44,23 @@ class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Forms_CustomerBirthday extend
         $form->setHtmlIdPrefix('emailcampaign_vars_');
         $fieldset = $form->addFieldset('emailcampaign_target_form', array('legend'=>Mage::helper('adfab_emailcampaign')->__('Campaign Variables')));
         
-        $options = array();
-        for ($i = 0; $i < 24; $i++) $options[] = $i;
-        
-        $fieldset->addField('variables_hour', 'select', array(
-            'label'     => Mage::helper('adfab_emailcampaign')->__('Send At (hour)'),
+        $fieldset->addField('variables_send_after_days', 'text', array(
+            'label'     => Mage::helper('adfab_emailcampaign')->__('Send mail after how many days ?'),
             'class'     => 'required-entry',
             'required'  => true,
-            'name'      => 'variables[hour]',
-            'options'   => $options
+            'name'      => 'variables[send_after_days]',
         ));
         
-        $options = array();
-        for ($i = 0; $i < 60; $i+= 5) $options["$i"] = $i;
-        
-        $fieldset->addField('variables_minute', 'select', array(
-            'label'     => Mage::helper('adfab_emailcampaign')->__('Send At (minute)'),
-            'class'     => 'required-entry',
-            'required'  => true,
-            'name'      => 'variables[minute]',
-            'options'   => $options
+        $fieldset->addField('variables_resend', 'select', array(
+            'label' => Mage::helper('adfab_emailcampaign')->__('Re send mail to customers at next planification if they already received it ?'),
+            'class' => 'required-entry',
+            'required' => true,
+            'name' => 'variables[resend]',
+            'value' => '1',
+            'values' => array(
+                '1' => Mage::helper('core')->__('Yes'),
+                '2' => Mage::helper('core')->__('No')
+            ),
         ));
         
         if ($campaign = Mage::registry('emailcampaign_data')) {

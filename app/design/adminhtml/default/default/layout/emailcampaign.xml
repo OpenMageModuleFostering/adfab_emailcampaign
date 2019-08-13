@@ -28,4 +28,10 @@
         </reference>
     </default>
     
+    <campaignPreview>
+        <block type="core/template" name="root" output="toHtml" template="system/email/template/preview.phtml">
+            <block type="adfab_emailcampaign/adminhtml_system_email_template_preview" name="content" as="content"></block>
+        </block>
+    </campaignPreview>
+    
 </layout>

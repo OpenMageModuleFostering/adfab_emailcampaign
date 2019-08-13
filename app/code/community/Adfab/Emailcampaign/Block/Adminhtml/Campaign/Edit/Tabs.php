@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,11 +30,11 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Block
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
+class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
     
     public function __construct()
@@ -74,8 +74,23 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tabs extends Mage_Adminh
                 ));
             }
         }
-         
+        
         return parent::_beforeToHtml();
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getTabsHtml()
+    {
+        $html = array();
+        $i = 0;
+        foreach ($this->_tabs as $tab) {
+            if ($i++ < 3) continue;
+            $html[] = $this->getTabContent($tab);
+        }
+        return $html;
     }
     
 }

@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,18 +30,24 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Model_Campaign_WishlistStockAlert extends Adfab_EmailCampaign_Model_Campaign_Cron
+class Adfab_Emailcampaign_Model_Campaign_WishlistStockAlert extends Adfab_Emailcampaign_Model_Campaign_Cron
 {
     
-    public function process(Adfab_EmailCampaign_Model_Campaign $campaign)
+    
+    
+    public function process(Adfab_Emailcampaign_Model_Campaign $campaign)
     {
         $this->_init($campaign);
-        
         $alert = $campaign->getVariable('stock_alert');
+        $customerIds = $campaign->getVariable('customer_ids'); // customers that already receive the email
+        if (!$customerIds) {
+            $customerIds = array();
+        }
+        $interval = $campaign->getVariable('interval'); // days interval before sending another email to a same customer
         
         $customers = $this->getCustomerList();
         
@@ -76,8 +82,25 @@ class Adfab_EmailCampaign_Model_Campaign_WishlistStockAlert extends Adfab_EmailC
                 HAVING sum_qty <= '.$alert.'
             ) as subRequest
         ')->fetchAll(Zend_Db::FETCH_COLUMN));
-    
+
         $customers->addFieldToFilter('entity_id', array('in' => $ids));
+        
+        // exclude customers that already received an email recently
+        // and update
+        $exclude = array();
+        $beforeTime = $this->_processTime - ($interval*24*60*60);
+        foreach ($ids as $id) {
+            if (isset($customerIds[$id])
+                    && $customerIds[$id] > $beforeTime) {
+                $exclude[] = $id;
+            } else {
+                $customerIds[$id] = $this->_processTime;
+            }
+        }
+        
+        if (!empty($exclude)) {
+            $customers->addFieldToFilter('entity_id', array('nin' => $exclude));
+        }
         
         $this->sendMail(
             $customers,
@@ -85,15 +108,13 @@ class Adfab_EmailCampaign_Model_Campaign_WishlistStockAlert extends Adfab_EmailC
                 return array('customer' => $customer);
             }
         );
+        
+        $campaign->setVariable('customer_ids', $customerIds);
     }
     
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_wishlist_stock_alert');
     }
-
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_wishlist_stock_alert');
-    }      
+    
 }

@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,14 +30,14 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Model
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Model_Campaign_AbandonedCart extends Adfab_EmailCampaign_Model_Campaign_Cron
+class Adfab_Emailcampaign_Model_Campaign_AbandonedCart extends Adfab_Emailcampaign_Model_Campaign_Cron
 {
     
-    public function process(Adfab_EmailCampaign_Model_Campaign $campaign)
+    public function process(Adfab_Emailcampaign_Model_Campaign $campaign)
     {
         $this->_init($campaign);
         
@@ -64,6 +64,8 @@ class Adfab_EmailCampaign_Model_Campaign_AbandonedCart extends Adfab_EmailCampai
         )->where(
             'quote.is_active = ?', 1
         )->where(
+            'quote.items_count != ?', 0
+        )->where(
             'quote.updated_at > ?', date('Y-m-d H:i:s', $dateFrom->getTimestamp())
         )->where(
             'quote.updated_at < ?', date('Y-m-d H:i:s', $dateTo->getTimestamp())
@@ -80,11 +82,5 @@ class Adfab_EmailCampaign_Model_Campaign_AbandonedCart extends Adfab_EmailCampai
     public function getCampaignUsage()
     {
         return Mage::helper('adfab_emailcampaign')->__('notice_abandoned_cart');
-    }
-    
-    public function getCampaignWarning()
-    {
-        return Mage::helper('adfab_emailcampaign')->__('warning_abandoned_cart');
-    }      
-    
+    }  
 }

@@ -14,12 +14,12 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Adfab EmailCampaign module to newer versions in the future.
- * If you wish to customize the Adfab EmailCampaign module for your needs
+ * the Adfab Emailcampaign module to newer versions in the future.
+ * If you wish to customize the Adfab Emailcampaign module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @copyright  Copyright (C) 2014 Adfab (http://www.adfab.fr/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,11 +30,11 @@
  * Long description of the class (if any...)
  *
  * @category   Adfab
- * @package    Adfab_EmailCampaign
+ * @package    Adfab_Emailcampaign
  * @subpackage Block
  * @author     Arnaud Hours <arnaud.hours@adfab.fr>
  */
-class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
+class Adfab_Emailcampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     
     protected function _prepareForm()
@@ -85,12 +85,12 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Ad
             'required'  => true,
             'values'    => array(
                 array(
-                    'value'     => Adfab_EmailCampaign_Model_Status::STATUS_ENABLED,
+                    'value'     => Adfab_Emailcampaign_Model_Status::STATUS_ENABLED,
                     'label'     => Mage::helper('adminhtml')->__('Enabled'),
                 ),
     
                 array(
-                    'value'     => Adfab_EmailCampaign_Model_Status::STATUS_DISABLED,
+                    'value'     => Adfab_Emailcampaign_Model_Status::STATUS_DISABLED,
                     'label'     => Mage::helper('adminhtml')->__('Disabled'),
                 ),
             ),
@@ -103,7 +103,7 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Ad
             'name'      => 'code',
             'required'  => true,
             'values'    => $campaigns,
-            'note'      => $this->__('if you change this value, please save and continue edit before editing campaign variables')
+//             'note'      => $this->__('if you change this value, please save and continue edit before editing campaign variables')
         ));
         
         $fieldset->addField('template_id', 'select', array(
@@ -113,16 +113,23 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Ad
             'values'    => Mage::getSingleton('adfab_emailcampaign/source_template')->toFormOptionArray()
         ));
         
-        $id = $model ? $model->getTemplateId() : 1;
-        
+        if ($model) {
+            $id = $model->getTemplateId() ? $model->getTemplateId() : 0;
+        } else {
+            $id = 0;
+        }
+
         $fieldset->addField('preview', 'note', array(
-            'text'     => '<a target="_blank" href="'.Mage::helper("adminhtml")->getUrl('/system_email_template/preview/id/'.$id).'">'.$this->__('Preview').'</a>'
+            'text'     => '<a target="_blank" href="'.Mage::helper("adminhtml")->getUrl('/campaign/preview/id/'.$id).'">'.$this->__('Preview').'</a>'
         ));
         
         $fieldset->addField('create_template', 'note', array(
             'text'     => '<a target="_blank" href="'.Mage::helper("adminhtml")->getUrl('/system_email_template/new').'">'.$this->__('Create template').'</a>'
         ));
 
+        $code = $fieldset->addField('loadFormAjaxUrl', 'hidden', array(
+        ));
+        
         /**
          * Adfab Logo. This module is open source and we just ask you to let this logo for a very passive ad :)
          */
@@ -130,24 +137,32 @@ class Adfab_EmailCampaign_Block_Adminhtml_Campaign_Edit_Tab_Form extends Mage_Ad
        
         foreach ($campaigns as $campaign) {
 
-            $usage = $fieldset->addField('usage_' . $campaign['value'], 'note', array(
+            $fieldset->addField('usage_' . $campaign['value'], 'note', array(
                 'text'     => $campaign['usage']
             ));
-            $warning = $fieldset->addField('warning_' . $campaign['value'], 'note', array(
+            $fieldset->addField('warning_' . $campaign['value'], 'note', array(
                 'text'     => $campaign['warning']
             ));            
         }
-        
         if ( $model ) {
-            $form->setValues($model->getData());
+            $data = $model->getData();
         } else {
-            $form->setValues(array(
+            $data = array(
                 'mode'  => 'test'
-            ));
+            );
         }
+        $data['loadFormAjaxUrl'] = Mage::helper("adminhtml")->getUrl('adminhtml/campaign/loadFormAjax/');
+        
+        if ($code = Mage::app()->getRequest()->getParam('campaign_code', false)) {
+            $data['code'] = $code;
+        }
+        
+        $form->setValues($data);
         	
         if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
-            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+            if ($block = $this->getLayout()->getBlock('head')) {
+                $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+            }
         }
         
         return parent::_prepareForm();

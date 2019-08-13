@@ -1,0 +1,3 @@
+"notice_customer_birthday","Cette campagne permet d'envoyer des mails planifiés chaque jour aux clients fêtant leur anniversaire"
+"warning_customer_birthday_cart_opt","La date d'anniversaire est actuellement en optionel dans la configuration client"
+"warning_customer_birthday_cart_none","La date d'anniversaire n'est actuellement pas activée dans la configuration client"

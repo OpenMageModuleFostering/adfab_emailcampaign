@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Adfab_Emailcampaign",
+    "name": "OpenMageModuleFostering\/Adfab_Emailcampaign",
     "type": "magento-module",
     "license": "MIT",
     "homepage": "",
     "description": "Email Campaign let you create scheduled email campaigns to initiate dialog with your prospects and customers. Boost your ROI and take care of your customers !",
     "authors": [
-    {
-        "name": "Adfab",
-        "email": "dev@adfab.fr"
-    }
-],
+        {
+            "name": "Adfab",
+            "email": "dev@adfab.fr"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
